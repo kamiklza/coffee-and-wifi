@@ -23,7 +23,7 @@ class CafeForm(FlaskForm):
     location = StringField('Cafe Location', validators=[DataRequired()])
     opening_time = StringField('Opening Time e.g 8AM', validators=[DataRequired()])
     closing_time = StringField('Closing Time e.g 6PM', validators=[DataRequired()])
-    coffee_rating = SelectField('Coffee Rating', choices=[(1, coffee_quality[0]), (2, coffee_quality[1]), ("test", coffee_quality[2]), (4, coffee_quality[3]), (5, coffee_quality[4])])
+    coffee_rating = SelectField('Coffee Rating', choices=[(1, coffee_quality[0]), (2, coffee_quality[1]), (coffee_quality[2], coffee_quality[2]), (4, coffee_quality[3]), (5, coffee_quality[4])])
     wifi_signal = StringField('Wifi Signal', validators=[DataRequired()])
     power_socket = StringField('Power Socket Available', validators=[DataRequired()])
     submit = SubmitField('Submit')
@@ -47,7 +47,7 @@ def home():
 def add_cafe():
     form = CafeForm()
     if form.validate_on_submit() and request.method == "POST":
-        with open('cafe-data.csv', 'a') as csv_file:
+        with open('cafe-data.csv', 'a', encoding='utf-8') as csv_file:
             csv_file.write(f"\n{form.cafe.data},{form.location.data}.{form.opening_time.data},{form.closing_time.data},"
                            f"{form.coffee_rating.data},{form.wifi_signal.data},{form.power_socket.data}")
     # Exercise:
