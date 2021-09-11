@@ -2,7 +2,7 @@ from flask import Flask, render_template, request
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, SelectField
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, URL
 import csv
 
 
@@ -12,20 +12,20 @@ Bootstrap(app)
 
 
 
-coffee_quality = ["☕", "☕☕", "☕☕☕", "☕☕☕☕", "☕☕☕☕☕"]
-wifi_quality = ["💪", "💪💪", "💪💪💪", "💪💪💪💪", "💪💪💪💪💪"]
-power_supply = ["🔌", "🔌🔌", "🔌🔌🔌", "🔌🔌🔌🔌", "🔌🔌🔌🔌🔌"]
+coffee = ["☕", "☕☕", "☕☕☕", "☕☕☕☕", "☕☕☕☕☕"]
+wifi = ["💪", "💪💪", "💪💪💪", "💪💪💪💪", "💪💪💪💪💪"]
+power = ["🔌", "🔌🔌", "🔌🔌🔌", "🔌🔌🔌🔌", "🔌🔌🔌🔌🔌"]
 
 
 
 class CafeForm(FlaskForm):
     cafe = StringField('Cafe name', validators=[DataRequired()])
-    location = StringField('Cafe Location', validators=[DataRequired()])
+    location = StringField('Cafe Location', validators=[DataRequired(), URL()])
     opening_time = StringField('Opening Time e.g 8AM', validators=[DataRequired()])
     closing_time = StringField('Closing Time e.g 6PM', validators=[DataRequired()])
-    coffee_rating = SelectField('Coffee Rating', choices=[(1, coffee_quality[0]), (2, coffee_quality[1]), (coffee_quality[2], coffee_quality[2]), (4, coffee_quality[3]), (5, coffee_quality[4])])
-    wifi_signal = StringField('Wifi Signal', validators=[DataRequired()])
-    power_socket = StringField('Power Socket Available', validators=[DataRequired()])
+    coffee_rating = SelectField('Coffee Rating', choices=[(coffee[0], coffee[0]), (coffee[1], coffee[1]), (coffee[2], coffee[2]), (coffee[3], coffee[3]), (coffee[4], coffee[4])], validators=[DataRequired()])
+    wifi_signal = SelectField('Wifi Rating', choices=[(wifi[0], wifi[0]), (wifi[1], wifi[1]), (wifi[2], wifi[2]), (wifi[3], wifi[3]), (wifi[4], wifi[4])], validators=[DataRequired()])
+    power_socket = SelectField('Power Rating', choices=[(power[0], power[0]), (power[1], power[1]), (power[2], power[2]), (power[3], power[3]), (power[4], power[4])], validators=[DataRequired()])
     submit = SubmitField('Submit')
 
 # Exercise:
@@ -48,7 +48,7 @@ def add_cafe():
     form = CafeForm()
     if form.validate_on_submit() and request.method == "POST":
         with open('cafe-data.csv', 'a', encoding='utf-8') as csv_file:
-            csv_file.write(f"\n{form.cafe.data},{form.location.data}.{form.opening_time.data},{form.closing_time.data},"
+            csv_file.write(f"\n{form.cafe.data},{form.location.data},{form.opening_time.data},{form.closing_time.data},"
                            f"{form.coffee_rating.data},{form.wifi_signal.data},{form.power_socket.data}")
     # Exercise:
     # Make the form write a new row into cafe-data.csv

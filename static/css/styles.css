@@ -1,4 +1,4 @@
-/* This CSS file will need to be added to the styling of 
+/* This CSS file will need to be added to the styling of
 your web pages for the styles to be rendered. */
 
 body {
@@ -22,4 +22,9 @@ a {
 .space-above {
     margin-top: 20px;
     padding-top: 20px;
+}
+
+
+.nav-btn {
+  margin: 20px;
 }
